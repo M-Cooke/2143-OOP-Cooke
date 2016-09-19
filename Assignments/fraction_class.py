@@ -1,4 +1,9 @@
-
+"""
+Micah Cooke
+micahcooke75@gmail.com
+Homework 2- Fractions
+26 Sep @ 1p.m.
+"""
 class fraction(object):
     def __init__(self,n=None,d=None):
         self.numerator = n
