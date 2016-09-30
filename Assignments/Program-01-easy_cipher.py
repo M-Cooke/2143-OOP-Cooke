@@ -141,12 +141,12 @@ class ShiftCipher(object):
 """
 Only run this if we call this file directly:
 """
-if __name__=='__main__':
-alice = ShiftCipher()
-alice.promptUserMessage()
-print(alice)
+	if __name__=='__main__':
+	alice = ShiftCipher()
+	alice.promptUserMessage()
+	print(alice)
 
 
-bob = ShiftCipher()
-bob.setMessage(alice.getCipherText(),True)
-print(bob)
+	bob = ShiftCipher()
+	bob.setMessage(alice.getCipherText(),True)
+	print(bob)
