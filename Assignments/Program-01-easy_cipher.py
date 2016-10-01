@@ -12,7 +12,7 @@ class ShiftCipher(object):
 	
 	"""
 	@ Name: __init__
-	@ Description: 
+	@ Description: constructutor, sets up self
 	@ Params:
 	     None
 	"""
@@ -105,7 +105,7 @@ class ShiftCipher(object):
 				continue
 			if ord(letter) > 96:
 				self.cleanText += chr(ord(letter)-32)
-			if not '#' in AlphaNumeric:
+			if not letter in AlphaNumeric:
 				continue
 			else:
 				self.cleanText += letter
@@ -121,9 +121,10 @@ class ShiftCipher(object):
 		if(not self.cleanText):
 			return
 		for letter in self.cleanText:
-		    self.cipherText += chr((((ord(letter)-65) + self.shift) % 26)+65)
-		    
-		
+			if (ord(letter) > 47) & (ord(letter) < 58):
+				self.cipherText += chr((((ord(letter)-48) + self.shift) % 10) + 48)
+			else:
+				self.cipherText += chr((((ord(letter)-65) + self.shift) % 26)+65)
 	
 	"""
 	@ Name: __decrypt
@@ -136,12 +137,15 @@ class ShiftCipher(object):
 		if(not self.cipherText):
 			return
 		for letter in self.cipherText:
-			self.cleanText += chr((((ord(letter)-65) - self.shift) %26) + 65)
+			if (ord(letter) > 47) & (ord(letter) < 58):
+				self.cleanText += chr((((ord(letter)-48) - self.shift) % 10) + 48)
+			else:
+				self.cleanText += chr((((ord(letter)-65) - self.shift) %26) + 65)
 
 """
 Only run this if we call this file directly:
 """
-	if __name__=='__main__':
+if __name__=='__main__':
 	alice = ShiftCipher()
 	alice.promptUserMessage()
 	print(alice)
