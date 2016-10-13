@@ -1,8 +1,10 @@
-##Micah Cooke
-1: Definitions:
+#Micah Cooke
+
+##1: Definitions:
+
 Using python comments, label all lines that an OOP definition could be applied to.
 class Employee:
-
+```python
    empCount = 0
    def __init__(self, name, salary):
       self.name = name
@@ -24,10 +26,12 @@ emp1.displayEmployee()
 emp2.displayEmployee()
 
 print "Total Employee %d" % Employee.empCount
+```
+-----
 
+###Answer 1
 
-
-Answer 1
+```python
 class Employee: 								#class
 
    empCount = 0   								#class variable
@@ -50,17 +54,21 @@ emp1.displayEmployee() 							#method call
 emp2.displayEmployee() 							#method call
 
 print "Total Employee %d" % Employee.empCount
+```
+-----
 
+##2: List Functions
 
-
-2: List Functions
 Given the list below:
+```python 
 States = ['Alabama','Illinois','Wyoming','New York', 'Vermont', 'New Hampshire', 'Maine', 'Texas']
-A) Sort the list
-B) Add 'Oklahoma' to the list in alphabetical order without sorting the list again. Actually, write a function that would add an item to the list in alphabetical order. Example:
+```
+**A)**Sort the list
+**B)** Add 'Oklahoma' to the list in alphabetical order without sorting the list again. Actually, write a function that would add an item to the list in alphabetical order. Example:
 
-Answer 2
-
+-----
+###Answer 2
+```python
 States = ['Alabama','Illinois','Wyoming','New York', 'Vermont', 'New Hampshire', 'Maine', 'Texas']
 States.sort()
 def addInOrder(States,x):
@@ -71,34 +79,40 @@ def addInOrder(States,x):
 	return States
 addInOrder(States, "Oklahoma")
 print(States)
-	
+```
+------
 
-
-3: Looping over Lists
+##3: Looping over Lists
 (10 Points)
-Using the following list as an example: L = [10,20,30,40,50,60,70,80,90,100] write a function that would divide each value by its index location + 1. Our example list would turn into: L = [10,10,10,10,10,10,10,10,10,10]. Remember NOT to get caught up on these values. Your function should work on any list.
+
+Using the following list as an example: `L = [10,20,30,40,50,60,70,80,90,100]` write a function that would divide each value by its index location + 1. Our example list would turn into: `L = [10,10,10,10,10,10,10,10,10,10]`. Remember NOT to get caught up on these values. Your function should work on any list.
+
 Usage:
+```python
 L =  [10,20,30,40,50,60,70,80,90,100]
 NList = addPrevious(L)
 print(NList)
 # prints: [10,10,10,10,10,10,10,10,10,10]
+```
 Your answer should consist of just the function definition and none of the usage I provided above.
 
-
-Answer 3
-
+------
+###Answer 3
+```python
 def addPrevious(L):
 	lst = []
 	for i in range(len(L)):
 		lst.append(L[i]/(i+1))
 	return lst
+```
+-----
 
 
-
-
-4: Looping over Dictionaries
+##4: Looping over Dictionaries
 (10 Points)
+
 Given the following dictionary:
+```python
 months = { 1 : "January", 
         2 : "February", 
         3 : "March", 
@@ -111,7 +125,9 @@ months = { 1 : "January",
         10 : "October", 
         11 : "November",
         12 : "December" }
+```
 Iterate over this dictionary, and create a new one that only uses the first three letters of the month. Also make the new months all lowercase. Your new dictionary should look like:
+```
 abbr_months = {1:"jan",
         2 :"feb",
         3 :"mar",
@@ -124,22 +140,25 @@ abbr_months = {1:"jan",
         10 : "oct", 
         11 : "nov",
         12 : "dec" }
-
+```
 
 To help you look up string slicing and lower.
 Your answer should include just the code that loops and creates the new dictionary.
 
 
-
-Answer 4 
+-----
+###Answer 4 
+```python
 abbr_months = {}
 for k,v in months.items():
 	abbr_months[k] = v[:3].lower()
-	
-
-5: Min and Max
+```	
+-----
+##5: Min and Max
 (10 Points)
+
 Assume that pythons built in min , max , and sort functions are broken. Write a function that receives a list then traverses the list and returns the min , max, and average values in a tuple.
+```python
 def miniStats(L):
 """ 
 @Description: Finds the min,max,and average values in a list
@@ -148,14 +167,14 @@ def miniStats(L):
 """
     # Start with a copy of the list so we don’t modify the original.
     L = L[:]
-
+```
 
 
 
 When writing your answer, include the entire function definition (without the comment block).
-
-Answer 5
-
+-----
+###Answer 5
+```python
 def miniStats(L):
 	L = L[:]
 	min = L[0]
@@ -169,19 +188,21 @@ def miniStats(L):
 		sum += i
 	average = sum/len(L)
 	return(min, max, round(average,2))
-		
+```		
+-----
+##6: Prime Class
 
-6: Prime Class
 Write a class called myPrimes that represents a collection of your prime numbers.
-addPrime :
-receives a prime number and adds it to your collection of primes
-it must be checked to make sure it's prime! (should be a private method that does this).
-removePrime:
-a method will remove a prime from your list
-printPrimes:
-this method will print your prime numbers out
-
-Answer 6
+-`addPrime` :
+	-receives a prime number and adds it to your collection of primes
+	-it must be checked to make sure it's prime! (should be a private method that does this).
+-`removePrime`:
+	-a method will remove a prime from your list
+-`printPrimes`:
+	-this method will print your prime numbers out
+-----
+###Answer 6
+```python
 class myPrimes(object):
 	def __init__(self):
 		self.lst = []
@@ -216,3 +237,4 @@ b.addPrime(13)
 b.addPrime(2)
 b.removePrime(13)
 b.printPrimes()
+```
