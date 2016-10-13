@@ -1,4 +1,4 @@
-Micah Cooke
+##Micah Cooke
 1: Definitions:
 Using python comments, label all lines that an OOP definition could be applied to.
 class Employee:
