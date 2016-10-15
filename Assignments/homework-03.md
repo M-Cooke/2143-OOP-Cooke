@@ -79,7 +79,13 @@ def take_color(self, color):
 ### Answer 2
 
 ```python
-# answer here
+def take_color(self, color):
+    for i in range(len(self.skittles)):
+        take_skittle = self.skittles[i].color
+        if take_skittle == color:
+            return self.skittles.pop(i)
+        else:
+            return None
 
 ```
 
@@ -97,6 +103,8 @@ def take_all(self):
 ### Answer 3
 
 ```python
-# answer here
+def take_all(self):
+    for i in range(len(self.skittles)):
+        print(self.take_skittle().color)
 
 ```
