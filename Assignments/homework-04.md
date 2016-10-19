@@ -40,8 +40,7 @@ print(b.a)
 # prints: 3
 
 print(f.garply())
-# prints: 4
-
+# prints: Error because baz is defined in Bar not Foo, and Foo does not inherit from Bar.
 print(b.garply())
 # prints: 3
 
