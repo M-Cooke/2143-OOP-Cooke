@@ -79,6 +79,11 @@ def take_color(self, color):
 ### Answer 2
 
 ```python
+"""
+@Function: take_color
+@Description: 
+  Loops through the skittles list; if the skittle matches the inputed color, it is removed and the list is returned
+"""
 def take_color(self, color):
     for i in range(len(self.skittles)):
         take_skittle = self.skittles[i].color
@@ -103,6 +108,11 @@ def take_all(self):
 ### Answer 3
 
 ```python
+"""
+@Function: take_all
+@Description: 
+  Loops through the skittles lists, removes and prints the color of each skittle
+"""
 def take_all(self):
     for i in range(len(self.skittles)):
         print(self.take_skittle().color)
