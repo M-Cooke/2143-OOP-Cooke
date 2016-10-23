@@ -3,6 +3,14 @@
 ###Question 1
 ```
 python
+
+@Class: cat
+@Description: sets up a template for cat information
+@Methods:
+__init__ : constructor that inherits from Pet and adds self.lives
+talk: inherits from Pet and specifies what the cat says
+lose_life: if the cat's lives are greater than one, then it loses a life and is still considered alive.
+	Otherwise, once the life is removed the cat is no longer considered alive.
 class Cat(Pet):
 	def __init__(self, name, owner, lives=9):
 		self.lives = lives
