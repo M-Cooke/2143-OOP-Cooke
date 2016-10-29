@@ -1,8 +1,8 @@
 """
 Changes and comments were made in RandomRoll and in StartGame
 Micah Cooke
-Professor Griffin
-2143 OOP
+micahcooke75@gmail.com
+Program 2- Part 1
 23 October 2016
 
 """
@@ -163,7 +163,7 @@ class Player(object):
         self.LastScore = Score
         self.LastNumRolls = NumRolls
         
-        """
+    """
     @Method: RandomRoll
     @Description: The player will roll a random number of times. After each roll, as
     long as the roll doesn't equal 0, I added code to sum the current score of rolls 
