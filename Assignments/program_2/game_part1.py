@@ -176,14 +176,15 @@ class Player(object):
         Score = 0
         NumRolls = 0
         for i in range(random.randint(1,self.Strategies['Random'])):
-            NumRolls += 1
-            roll = self.pig.Roll()
-            if roll == 0:
-                break
-            Score += roll
-            temp = self.TotalScore + Score
-            if temp >= self.TargetScore:
-            	return (Score, NumRolls)
+            if self.TotalScore + Score < self.TargetScore:
+                NumRolls += 1
+                roll = self.pig.Roll()
+                if roll == 0:
+                    break
+                Score += roll
+                temp = self.TotalScore + Score
+                if temp >= self.TargetScore:
+                	return (Score, NumRolls)
         
         return (Score,NumRolls)
 
