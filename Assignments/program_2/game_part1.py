@@ -1,5 +1,10 @@
 """
 Changes and comments were made in RandomRoll and in StartGame
+Micah Cooke
+Professor Griffin
+2143 OOP
+23 October 2016
+
 """
 
 
@@ -45,36 +50,36 @@ class Pig(object):
     @Returns: int: [0=skunk value occured, total of all dice otherwise]
     """ 
     def Roll(self):
-		scores = []
-		for d in self.DiceList:
-			scores.append(d.Roll())
-			if self.SkunkValue in scores:
-				return 0 
-		return sum(scores)
+        scores = []
+        for d in self.DiceList:
+            scores.append(d.Roll())
+            if self.SkunkValue in scores:
+                return 0 
+        return sum(scores)
 
 ##############################################################################
 ##############################################################################
 
 class Player(object):
-    def __init__(self,name,num_dice=1,target_score = 100,strategy=('Random',7)):
-		self.Name = name        # My name
-		self.TotalScore = 0     # Total score
-		self.LastScore = 0      # Score on last turn
-		self.LastNumRolls = 0   # Last number of rolls
-		self.Opponents = {}     # Dict of opponents
-		self.NumDice = num_dice
-		self.TargetScore = target_score
-		self.Strategy = strategy[0]
-		self.pig = Pig(num_dice)# init pig game 
-		self.Strategies = {
-				'Target_Score':0,
-				'Target_Rolls':0,
-				'Sprint_To_Finish':0,
-				'Mimic_Opponent':0,
-				'Situational':0,
-				'Random':0
-				}
-		self.Strategies[strategy[0]] = strategy[1]
+    def __init__(self,name,num_dice=1, target_score = 100, strategy=('Random',7)):
+        self.Name = name        # My name
+        self.TotalScore = 0     # Total score
+        self.LastScore = 0      # Score on last turn
+        self.LastNumRolls = 0   # Last number of rolls
+        self.Opponents = {}     # Dict of opponents
+        self.NumDice = num_dice
+        self.TargetScore = target_score
+        self.Strategy = strategy[0]
+        self.pig = Pig(num_dice)# init pig game 
+        self.Strategies = {
+                'Target_Score':0,
+                'Target_Rolls':0,
+                'Sprint_To_Finish':0,
+                'Mimic_Opponent':0,
+                'Situational':0,
+                'Random':0
+            }
+        self.Strategies[strategy[0]] = strategy[1]
 
     """
     @Method: AddOpponents
@@ -88,12 +93,12 @@ class Player(object):
     @Returns: None
     """
     def AddOpponents(self,opponent):
-        if not type(opponent) == list and not opponent.Name == self.Name:
-            self.Opponents[opponent.Name] = opponent
-        else:
-            for op in opponent:
-                if not op.Name == self.Name:
-                    self.Opponents[op.Name] = op
+        # if not type(opponent) == list and not opponent.Name == self.Name:
+        #     self.Opponents[opponent.Name] = opponent
+        # else:
+        for op in opponent:
+            if not op.Name == self.Name:
+                self.Opponents[op.Name] = op
 
     """
     @Method: __str__
@@ -143,68 +148,58 @@ class Player(object):
     @Returns: int: total
     """
     def Roll(self):
-    	
-		if self.Strategy == 'Random':
-			Score,NumRolls = self.RandomRoll()
-		elif self.Strategy == 'Aggressive':
-			pass
-		elif self.Strategy == 'Cautious':
-			pass
-		elif self.Strategy == 'Robust':
-			pass
-		elif self.Strategy == 'CopyCat':
-			pass
-
-		self.TotalScore += Score
-		self.LastScore = Score
-		self.LastNumRolls = NumRolls
-
+        if self.Strategy == 'Random':
+            Score,NumRolls = self.RandomRoll()
+        elif self.Strategy == 'Aggressive':
+            pass
+        elif self.Strategy == 'Cautious':
+            pass
+        elif self.Strategy == 'Robust':
+            pass
+        elif self.Strategy == 'CopyCat':
+            pass
         
-    """
+        self.TotalScore += Score
+        self.LastScore = Score
+        self.LastNumRolls = NumRolls
+        
+        """
     @Method: RandomRoll
-    @Description: After each roll this checks to make sure the
-		roll isn't 0 and then checks to see if the total score including
-		the new roll reaches the target score.
-
-		I plan to make the roll checking process a function that way it can
-		just be called in each strategy instead of repeating the same code. 
-    
-    @Returns: int: turn score and number of rolls
-    """        
+    @Description: The player will roll a random number of times. After each roll, as
+    long as the roll doesn't equal 0, I added code to sum the current score of rolls 
+    and compare it to winning score to test if equal so that they no longer roll and
+    risk losing their win.
+    @Params: None 
+    @Returns: (Score, NumRolls)
+    """    
     def RandomRoll(self):
-		Score = 0
-		NumRolls = 0
-		for i in range(random.randint(1,7)):			
-			NumRolls += 1
-			roll = self.pig.Roll()
-			if roll == 0:
-				break
-			Score += roll
-			temp = self.TotalScore + Score
-			if temp >= self.TargetScore:
-				return (Score,NumRolls)
-
-		return (Score,NumRolls)
-
+        Score = 0
+        NumRolls = 0
+        for i in range(random.randint(1,self.Strategies['Random'])):
+            NumRolls += 1
+            roll = self.pig.Roll()
+            if roll == 0:
+                break
+            Score += roll
+            temp = self.TotalScore + Score
+            if temp >= self.TargetScore:
+            	return (Score, NumRolls)
+        
+        return (Score,NumRolls)
 
             
-    def Target_Score(self):
+    def Aggressive(self):
         pass
         
-    def Target_Roll(self):
+    def Cautious(self):
         pass
 
-    def Sprint_To_Finish(self):
+    def Robust(self):
         pass
         
-    def Mimic_Opponent(self):
+    def CopyCat(self):
         pass
 
-    def Situational(self):
-        pass
-        
-    def Combination(self):
-        pass
 
 
 ##############################################################################
@@ -262,41 +257,30 @@ class Game(object):
                     
     """
     @Method: StartGame
-    @Description: This updates the players and plays the game.
-		Looping through the players it allows each player to roll according
-		to their strategy. Once, a player reaches the target score, it prints
-		that the player has stopped rolling and prints the final scores.
+    @Description: While there is not a winner, this loops through all the players and rolls. 
+    I additionally added that after each player, their score is checked to see if it matches 
+    the winning score so that the game ends more accurately.
     @Params:None
+    
     """         
     def StartGame(self):
 
-		self.UpdatePlayerOpponents()
-
-		# Main game loop
-
-		while not self.WinnerExists():
-	
-			for name,PlayerObj in self.Players.items():
-				PlayerObj.Roll()
-		
-				if PlayerObj.TotalScore >= self.TargetScore:
-					self.WinnerExists()
-					print(PlayerObj)
-			
-					print("%s has just reached %d points and is stopping." % (PlayerObj.Name, self.TargetScore))
-					print("These are the final scores:")
-					return
-				else:
-					print(PlayerObj)
-					
-	
-			
-		
-			
-				
-					
-
-
+        self.UpdatePlayerOpponents()
+        
+        # Main game loop
+        while not self.WinnerExists():
+            print(self)
+            for name,PlayerObj in self.Players.items():
+                PlayerObj.Roll()
+                
+                if PlayerObj.TotalScore >= self.TargetScore:
+                	self.WinnerExists()
+                	print(PlayerObj)
+                	print("\n%s has just reached %d points and is stopping. These are the final scores:\n" % (PlayerObj.Name, self.TargetScore))
+                	return
+                else:
+                	print(PlayerObj)
+       
     """
     @Method: WinnerExists
     @Description: Checks to see if a player has acheived the target score.
@@ -304,12 +288,12 @@ class Game(object):
     @Returns: bool
     """
     def WinnerExists(self):
-		for name,PlayerObj in self.Players.items():
-			if PlayerObj.TotalScore >= self.TargetScore:
-				self.WinnerName = PlayerObj.Name
-				return True
-		self.WinnerName = None
-		return False
+        for name,PlayerObj in self.Players.items():
+            if PlayerObj.TotalScore >= self.TargetScore:
+                self.WinnerName = PlayerObj.Name
+                return True
+        self.WinnerName = None
+        return False
 
     """
     @Method: Winner
@@ -338,20 +322,21 @@ class Game(object):
 
 
 
-p1 = Player('ann')
-p2 = Player('bob')
-p3 = Player('sue')
-p4 = Player('dax')
+def main():
+
+    p1 = Player('ann')
+    p2 = Player('bob')
+    p3 = Player('sue')
+    p4 = Player('dax')
     
-AllPlayers = [p1,p2,p3,p4]
+    AllPlayers = [p1,p2,p3,p4]
     
     # Param values to initialize a pig game instance
-kwargs = {'num_dice':1,'random_roles':9,'target_score':100,'players':AllPlayers}
+    kwargs = {'num_dice':1,'random_roles':9,'target_score':100,'players':AllPlayers}
 
-g = Game(**kwargs)
+    g = Game(**kwargs)
     
-print(g)
+    print(g)
     
     
-
-
+main()
