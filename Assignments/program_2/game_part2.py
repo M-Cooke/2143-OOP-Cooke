@@ -151,7 +151,6 @@ class Player(object):
     def Roll(self):
     	if self.TotalScore / self.TargetScore >= .8:
     		self.Strategy = 'SprintToFinish'
-    		Score, NumRolls = self.SprintToFinish()
     	if self.Strategy == 'Random':
     		Score,NumRolls = self.RandomRoll()
     	elif self.Strategy == 'Aggressive':
@@ -163,7 +162,7 @@ class Player(object):
     	elif self.Strategy == 'CopyCat':
     		pass
     	elif self.Strategy == 'SprintToFinish':
-        Score, NumRolls = self.SprintToFinish()
+            Score, NumRolls = self.SprintToFinish()
         
       self.TotalScore += Score
     	self.LastScore = Score
@@ -183,6 +182,7 @@ class Player(object):
     		NumRolls += 1
     		roll = self.pig.Roll()
     		if roll == 0:
+                Score = 0
     			break
     		Score += roll
     	
@@ -205,6 +205,7 @@ class Player(object):
             	NumRolls += 1
             	roll = self.pig.Roll()
             	if roll == 0:
+                    Score = 0
             	    break
             	Score += roll
         
@@ -225,6 +226,7 @@ class Player(object):
         		NumRolls += 1
         		roll = self.pig.Roll()
         		if roll == 0:
+                    Score = 0
         			break
         		Score += roll
         
@@ -240,10 +242,11 @@ class Player(object):
     def Cautious(self):
         Score = 0
         NumRolls = 0
-        for i in range(random.randint(self.Strategies['Cautious'])):
+        for i in range(random.randint(self.Strategies['Cautious'], 6)):
         	if self.TotalScore + Score < self.TargetScore:
         		NumRolls += 1
         		if roll == 0:
+                    Score = 0
         			break
         		Score += roll
         		temp = self.TotalScore + Score
@@ -282,6 +285,7 @@ class Game(object):
         self.Aggressive = kwargs['aggressive_roles'] # max num aggressive rolls
         self.Cautious = kwargs['cautious_roles'] # min num cautious rolls
         self.TargetScore = kwargs['target_score']   # game winning score
+        self.SprintToFinish = kwargs['sprint_to_finish'] #min score to start sprinting
         self.WinnerName = None                      # no winner yet
         
         # initialize all players
@@ -385,7 +389,7 @@ p4 = Player('dax')
 AllPlayers = [p1,p2,p3,p4]
 
 # Param values to initialize a pig game instance
-kwargs = {'num_dice':1,'random_roles':9, 'aggressive_roles': 9, 'cautious_roles': 3, 'target_score':100,'players':AllPlayers}
+kwargs = {'num_dice':1,'random_roles':9, 'aggressive_roles': 9, 'cautious_roles': 3, 'sprint_to_finish': 'target_score'*.8,'target_score':100,'players':AllPlayers}
 
 g = Game(**kwargs)
 
