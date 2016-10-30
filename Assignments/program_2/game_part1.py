@@ -182,9 +182,6 @@ class Player(object):
                 if roll == 0:
                     break
                 Score += roll
-                temp = self.TotalScore + Score
-                if temp >= self.TargetScore:
-                	return (Score, NumRolls)
         
         return (Score,NumRolls)
 
