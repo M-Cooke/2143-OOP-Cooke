@@ -267,7 +267,7 @@ class Game(object):
         
         # Main game loop
         while not self.WinnerExists():
-            print(self)
+            
             for name,PlayerObj in self.Players.items():
                 PlayerObj.Roll()
                 
