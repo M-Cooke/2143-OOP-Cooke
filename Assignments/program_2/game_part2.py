@@ -381,8 +381,8 @@ class Game(object):
 
 
 
-p1 = Player('ann', strategy ='Aggressive')
-p2 = Player('bob', strategy ='Cautious')
+p1 = Player('ann')
+p2 = Player('bob')
 p3 = Player('sue')
 p4 = Player('dax')
 
