@@ -65,6 +65,7 @@ print(c3)
 #prints: (red: 128,green: 128,blue: 128)
 ```
 ----
+##Answer:
 ```python
     def __add__(self, rhs = (0,0,0)):
         nred = (self.color[0] + rhs.color[0])/2
