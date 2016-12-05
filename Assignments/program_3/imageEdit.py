@@ -93,4 +93,4 @@ class ImageEd(object):
     def warhol(self):
         pass
 
-image = ImageEd(CUTEPUPPY)
+
