@@ -1,7 +1,8 @@
 #Micah Cooke
 #2143 OOP
 #12/9/2016
-#Program 3
+#Program 3 
+#imageEdit.py code
 
 
 from PIL import Image
