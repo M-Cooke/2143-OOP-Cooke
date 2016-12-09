@@ -9,28 +9,25 @@ class ImageEd(object):
         self.width = self.img.size[0]
         self.height = self.img.size[1]
 
-    def glass_effect(self, img, dist = 5):
+
+    def glass_effect(self, img = self.img, dist = 5):
         nums = [x for x in range(i-dist, i+dist) if x >=0]
         choice = random.choice(nums)
         for x in range(dist, self.width-dist):
-            for y in range(-dist, self.height-dist):
-                for i in range(-dist, dist):
-                    for j in range(-dist, dist):
-                        pix = img.getpixel((x+i, y+j))
-                        r = choice[0]
-                        g = choice[1]
-                        b = choice[2]
-                img.putpixel((x,y),(r,g,b))
-
-        #img.save('glasspic.jpg')
+            for y in range(dist, self.height-dist):
+                img.getpixel((x,y))
+                img.putpixel((x+choice,y+choice))
+    
                 
-    def flip(self, img):
-        for x in self.width:
-            for y in self.height:
-                opp = self.height - y
-                y = opp
+    def flip(self, img = self.img):
+        for y in range(self.height):
+            for x in range(self.width):
+                img.getpixel((x,y))
+                img.putpixel((self.width - x, y))
+        return img
+                
 
-    def blur(self, img, blur_power = 3):
+    def blur(self, img = self.img, blur_power = 3):
         r = 0
         g = 0
         b = 0
@@ -47,50 +44,89 @@ class ImageEd(object):
                 r = 0
                 g = 0
                 b = 0
+        return img
                         
-        #img.save('blurpic.jpg')
-        )
+        
+        
 
-    def posterize(self, img):
-        for p in getPixels(img):
-            r = getRed(p)
-            g = getGreen(p)
-            b = getBlue(p)
+    def posterize(self, img = self.img, snap_val = 51):
+        snap = snap_val // 2
+        for x in range(self.width):
+            for y in range(self.height):
+                rgb = img.getpixel((x,y))
+                r = rgb[0]
+                g = rgb[1]
+                b = rgb[2]
 
-            if(r < 64):
-                setRed(p,31)
-            elif(r < 128):
-                setRed(p,95)
-            elif(r < 192):
-                setRed(p,159)
-            elif(r < 256):
-                setRed(p,223)
+                if (r%snap) < snap:
+                    r -= r%snap
+                else:
+                    r += (snap_val - snap)
+                
+                if (g%snap) < snap:
+                    g -= g%snap
+                else:
+                    g += (snap_val - snap) 
 
-            if(g < 64):
-                setGreen(p,31)
-            elif(g < 128):
-                setGreen(p,95)
-            elif(g < 192):
-                setGreen(p,159)
-            elif(g < 256):
-                setGreen(p,223)            
+                if (b%snap) < snap:
+                    b -= b%snap
+                else:
+                    b += (snap_val - snap)
 
-            if(b < 64):
-                setBlue(p,31)
-            elif(b < 128):
-                setBlue(p,95)
-            elif(b < 192):
-                setBlue(p,159)
-            elif(b < 256):
-                setBlue(p,223)
+                img.putpixel((x,y), rgb)
+        return img
 
-    def solarize(self, img):
-        for p in getPixels(img):
-            setRed(p,255-getRed(p))
-            setGreen(p,255-getGreen(p))
-            setBlue(p,255-getBlue(p))       
 
-    def warhol(self):
-        pass
+
+    def solarize(self, img = self.img, thresh = 125):
+        for x in range(self.width):
+            for y in range(self.height):
+                rgb = img.getpixel((x,y))
+                r = rgb[0]
+                g = rgb[1]
+                b = rgb[2]
+                
+                if r < thresh:
+                    r = thresh - r
+                else:
+                    r = r + thresh
+                    
+                if g < thresh:
+                    g = thresh - g
+                else:
+                    g = g + thresh
+
+                if b < thresh:
+                    b = thresh - b
+                else:
+                    b = b + thresh                                        
+                
+                img.putpixel((x,y), rgb)
+
+        return img
+
+                
+               
+
+    def warhol(self, img = self.img, snap_val = 51):
+        num = int(255//snap_val)
+        intervals = []
+        for i in num:
+            intervals.append(0+snap_val*i)
+        color = [(0,0,0),(85,85,85),(0,255,0),(255,0,0),(0,0,255),(255,255,255)]
+        for x in range(self.width):
+            for y in range(self.height):
+                rgb = img.getpixel((x,y))
+                gray = int((rgb[0]+rgb[1]+rgb[2])/3)
+                imgcopy = img.putpixel((x,y), rgb)
+                imgcopy2 = posterize(imgcopy, snap_val)
+                rgb2 = imgcopy2.getpixel((x,y))
+                for j in intervals:
+                    if rgb2 <= intervals[j]:
+                        rgb2 = color[j]
+                        imgcopy2.putpixel((x,y), rgb2)
+                        break    
+        return imgcopy2
+
 
 
