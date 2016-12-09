@@ -4,30 +4,31 @@ import random
 
 
 class ImageEd(object):
-    def __init__(self, file):
+    def __init__(self, file = None):
         self.img = Image.open(file)
         self.width = self.img.size[0]
         self.height = self.img.size[1]
 
 
-    def glass_effect(self, img = self.img, dist = 5):
-        nums = [x for x in range(i-dist, i+dist) if x >=0]
-        choice = random.choice(nums)
+    def glass_effect(self, img = None, dist = 5):
+        nums = [x for x in range(0-dist, 0+dist) if x >=0]
         for x in range(dist, self.width-dist):
             for y in range(dist, self.height-dist):
-                img.getpixel((x,y))
-                img.putpixel((x+choice,y+choice))
+                choice = random.choice(nums)
+                rgb = self.img.getpixel((x,y))
+                self.img.putpixel((x+choice,y+choice))
+        return self.img
     
                 
-    def flip(self, img = self.img):
+    def flip(self, img = None):
         for y in range(self.height):
-            for x in range(self.width):
-                img.getpixel((x,y))
-                img.putpixel((self.width - x, y))
-        return img
+            for x in range(self.width//2):
+                rgb = self.img.getpixel((x,y))
+                self.img.putpixel((self.width - x, y))
+        return self.img
                 
 
-    def blur(self, img = self.img, blur_power = 3):
+    def blur(self, img = None, blur_power = 3):
         r = 0
         g = 0
         b = 0
@@ -36,24 +37,24 @@ class ImageEd(object):
             for y in range(blur_power, self.height-blur_power):
                 for i in range(-blur_power, blur_power):
                     for j in range(-blur_power, blur_power):
-                        pix = img.getpixel((x+i, y+j))
+                        pix = self.img.getpixel((x+i, y+j))
                         r += pix[0]
                         g += pix[1]
                         b += pix[2]
-                img.putpixel((x,y), (int(r/d), int(g/d), int(b/d)))
+                self.img.putpixel((x,y), (int(r/d), int(g/d), int(b/d)))
                 r = 0
                 g = 0
                 b = 0
-        return img
+        return self.img
                         
         
         
 
-    def posterize(self, img = self.img, snap_val = 51):
+    def posterize(self, img = None, snap_val = 150):
         snap = snap_val // 2
         for x in range(self.width):
             for y in range(self.height):
-                rgb = img.getpixel((x,y))
+                rgb = self.img.getpixel((x,y))
                 r = rgb[0]
                 g = rgb[1]
                 b = rgb[2]
@@ -73,15 +74,15 @@ class ImageEd(object):
                 else:
                     b += (snap_val - snap)
 
-                img.putpixel((x,y), rgb)
-        return img
+                self.img.putpixel((x,y), (r,g,b))
+        return self.img
 
 
 
-    def solarize(self, img = self.img, thresh = 125):
+    def solarize(self, img = None, thresh = 125):
         for x in range(self.width):
             for y in range(self.height):
-                rgb = img.getpixel((x,y))
+                rgb = self.img.getpixel((x,y))
                 r = rgb[0]
                 g = rgb[1]
                 b = rgb[2]
@@ -101,14 +102,14 @@ class ImageEd(object):
                 else:
                     b = b + thresh                                        
                 
-                img.putpixel((x,y), rgb)
+                self.img.putpixel((x,y), rgb)
 
-        return img
+        return self.img
 
                 
                
 
-    def warhol(self, img = self.img, snap_val = 51):
+    def warhol(self, img = None, snap_val = 51):
         num = int(255//snap_val)
         intervals = []
         for i in num:
@@ -116,9 +117,9 @@ class ImageEd(object):
         color = [(0,0,0),(85,85,85),(0,255,0),(255,0,0),(0,0,255),(255,255,255)]
         for x in range(self.width):
             for y in range(self.height):
-                rgb = img.getpixel((x,y))
+                rgb = self.img.getpixel((x,y))
                 gray = int((rgb[0]+rgb[1]+rgb[2])/3)
-                imgcopy = img.putpixel((x,y), rgb)
+                imgcopy = self.img.putpixel((x,y), rgb)
                 imgcopy2 = posterize(imgcopy, snap_val)
                 rgb2 = imgcopy2.getpixel((x,y))
                 for j in intervals:
@@ -127,6 +128,3 @@ class ImageEd(object):
                         imgcopy2.putpixel((x,y), rgb2)
                         break    
         return imgcopy2
-
-
-
