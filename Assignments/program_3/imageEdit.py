@@ -1,15 +1,32 @@
+#Micah Cooke
+#2143 OOP
+#12/9/2016
+#Program 3
+
+
 from PIL import Image
 import urllib, cStringIO
 import random
 
-
+#@ClassName: ImageEd
+#@Inheritance: Object
 class ImageEd(object):
+    #@Name: __init__
+    #@Parameters: self, file
+    #@Description: Constructor that opens a file and saves
+    #   it in self.img, then sets the width and height
+    #@Return: None
     def __init__(self, file = None):
         self.img = Image.open(file)
         self.width = self.img.size[0]
         self.height = self.img.size[1]
 
-
+    #@Name: glass_effect
+    #@Parameters: self, image, distance value
+    #@Description: This uses for loops starting away from the edges
+    #   by the distance value to work with each individual pixel. Then 
+    #   the pixel is switched with a random neighbor.
+    #@Return: self.img
     def glass_effect(self, img = None, dist = 5):
         nums = [x for x in range(0-dist, 0+dist) if x >=0]
         for x in range(dist, self.width-dist):
@@ -19,7 +36,12 @@ class ImageEd(object):
                 self.img.putpixel((x+choice,y+choice))
         return self.img
     
-                
+    #@Name: flip
+    #@Parameters: self, image
+    #@Description: Nested for loop with half the width allow us to
+    #   exchange a pixel's position with another pixel further down
+    #   the row. 
+    #Return: self.img
     def flip(self, img = None):
         for y in range(self.height):
             for x in range(self.width//2):
@@ -27,7 +49,11 @@ class ImageEd(object):
                 self.img.putpixel((self.width - x, y))
         return self.img
                 
-
+    #@Name: blur
+    #@Parameters: self, image, blur_power value
+    #@Description: This is the example code we used in class.
+    #   Multiple for loops are inefficient, but it works :)
+    #Return: self.img
     def blur(self, img = None, blur_power = 3):
         r = 0
         g = 0
@@ -49,7 +75,12 @@ class ImageEd(object):
                         
         
         
-
+    #@Name: posterize
+    #@Parameters: self, image, snap_val
+    #@Description: Nested for loop give access to each pixel.
+    #   If the module of each rgb value and half the snap_val is
+    #   less than snap, then we subract, otherwise we add.
+    #Return: self.img
     def posterize(self, img = None, snap_val = 150):
         snap = snap_val // 2
         for x in range(self.width):
@@ -78,7 +109,12 @@ class ImageEd(object):
         return self.img
 
 
-
+    #@Name: solarize
+    #@Parameters: self, image, thresh
+    #@Description: Nested for loop give access to each pixel. For each
+    #   rbg value, if it is less than the thresh then we subtract our value 
+    #   from thresh, otherwise we add thresh to our value
+    #Return: self.img
     def solarize(self, img = None, thresh = 125):
         for x in range(self.width):
             for y in range(self.height):
@@ -88,19 +124,19 @@ class ImageEd(object):
                 b = rgb[2]
                 
                 if r < thresh:
-                    r = thresh - r
+                    r -= thresh
                 else:
-                    r = r + thresh
+                    r += thresh
                     
                 if g < thresh:
-                    g = thresh - g
+                    g -= thresh
                 else:
-                    g = g + thresh
+                    g += thresh
 
                 if b < thresh:
-                    b = thresh - b
+                    b -= thresh
                 else:
-                    b = b + thresh                                        
+                    b += thresh                                        
                 
                 self.img.putpixel((x,y), rgb)
 
@@ -108,7 +144,15 @@ class ImageEd(object):
 
                 
                
-
+    #@Name: warhol
+    #@Parameters: self, image, snap_val
+    #@Description: Num determines how many intervals we have. Intervals
+    #   creates a list of the boundaries for each interval. Colors is a 
+    #   list of random colors. Nested for loops give us access to each 
+    #   individual pixel, which we grayscale then posterize. Then a for 
+    #   loop allows us to figure out which interval the new value of the 
+    #   pixel belongs to, then we assign it a new color.
+    #Return: imgcopy2
     def warhol(self, img = None, snap_val = 51):
         num = int(255//snap_val)
         intervals = []
