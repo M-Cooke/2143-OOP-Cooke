@@ -1,0 +1,46 @@
+import re 
+ofile = open("outfile.txt", "w")
+ofile.write("Micah Cooke\n")
+ofile.write("This program encrypts or decrypts a file according\n")
+ofile.write("to the preferences of the user, then writes the new\n")
+ofile.write("words to another file.\n\n")
+file = input("Enter file name: ")
+try:
+	fin = open(file)
+except:
+	ofile.write(file + " file cannot be opened")
+	exit()
+shift = int(input("Please enter shift number: "))
+code = str(input("Would you like to encrypt or decrypt: "))
+
+
+
+
+if code == "encrypt":
+	for line in fin:
+	
+		for ch in line:
+			if (ord(ch) < 65) or (ord(ch) > 122):
+				ofile.write(ch)
+			elif (ord(ch) > 90) and (ord(ch) < 97):
+				ofile.write(ch)
+			elif (ord(ch) < 91) and (ord(ch) > 64):
+				ofile.write(chr((((ord(ch)-65) + shift) % 26)+65))
+			else:
+				ofile.write(chr((((ord(ch)-97) + shift) % 26)+97))
+elif code == "decrypt":
+	for line in fin:
+		for ch in line:
+			if (ord(ch) < 65) or (ord(ch) > 122):
+				ofile.write(ch)
+			elif (ord(ch) > 90) and (ord(ch) < 97):
+				ofile.write(ch)
+			elif (ord(ch) < 91) and (ord(ch) > 64): 
+				ofile.write(chr((((ord(ch)-65) - shift) % 26)+65))
+			else:
+				ofile.write(chr((((ord(ch)-97) - shift) % 26)+97))
+else:
+	ofile.write("Invalid input.")
+
+fin.close
+ofile.close
